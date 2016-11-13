@@ -38,10 +38,7 @@ class NewVisitorTest(unittest.TestCase):
         # When she hits enter, the page updates, and now the page lists
         # "1: Buy peacock feathers" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
-
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Buy peacock feathers')
 
         # There is still a text box inviting hear to add another item. She
         # enters "Use peacock feathers to make a fly" (Edith is very
@@ -51,12 +48,9 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
         # The page updates again, and now shows both items on her list
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
-        self.assertIn(
-            '2: Use peacock feathers to make a fly',
-            [row.text for row in rows]
+        self.check_for_row_in_list_table('1: Buy peacock feathers')
+        self.check_for_row_in_list_table(
+            '2: Use peacock feathers to make a fly'
         )
 
         # Edith wonders whether the site will remenber her list. Then she sees
@@ -65,6 +59,13 @@ class NewVisitorTest(unittest.TestCase):
         self.fail('Finich the test!')
 
         # She visits that URL - her to-do list is still there
+
+    def check_for_row_in_list_table(self, row_text):
+        """Check if table contain row_text"""
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
