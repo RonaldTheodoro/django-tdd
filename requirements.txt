@@ -1,2 +1,4 @@
-Django==1.10.3
+dj-database-url==0.4.1
+Django==1.8.16
+python-decouple==3.0
 selenium==3.0.1
